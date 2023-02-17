@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Obstacles
   - Scoring
+  - ScoreSound
+  - LostSound
+  - WingSound
   layers:
   - Default
   - TransparentFX

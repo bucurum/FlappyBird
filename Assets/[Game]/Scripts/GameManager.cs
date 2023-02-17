@@ -1,9 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Audio;
 
 public class GameManager : MonoBehaviour
 {
+    private AudioSource audioSourceScore;
+    private AudioSource audioSourceLose;
+    private AudioSource audioSourceWing;
     private int score = 0;
     [SerializeField] Player player;
     [SerializeField] TextMeshProUGUI scoreText;
@@ -12,12 +16,16 @@ public class GameManager : MonoBehaviour
 
     public void IncreaseScore()
     {
+        audioSourceScore.Play();
         score++;
         scoreText.text = score.ToString();
     }
 
     void Awake()
     {
+        audioSourceScore = GameObject.FindGameObjectWithTag("ScoreSound").GetComponent<AudioSource>();
+        audioSourceLose = GameObject.FindGameObjectWithTag("LostSound").GetComponent<AudioSource>();
+        audioSourceWing = GameObject.FindGameObjectWithTag("WingSound").GetComponent<AudioSource>();
         Application.targetFrameRate = 60;
         Pause();
     }
@@ -46,9 +54,17 @@ public class GameManager : MonoBehaviour
     }
     public void GameOver()
     {
-       gameOver.SetActive(true);
-       playButton.SetActive(true);
-       Pause();
-       score = 0;
+        Pause();
+        audioSourceLose.Play();
+        gameOver.SetActive(true);
+        playButton.SetActive(true);
+        score = 0;
+    }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) //add touch input
+        {
+            audioSourceWing.Play();
+        }
     }
 }
